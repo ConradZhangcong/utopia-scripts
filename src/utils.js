@@ -1,4 +1,4 @@
-const downloadGitRepo = require("download-git-repo");
+import downloadGitRepo from "download-git-repo";
 
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -19,7 +19,4 @@ const downloadRepo = (repo, dest) => {
   });
 };
 
-module.exports = {
-  sleep,
-  downloadRepo,
-};
+export { sleep, downloadRepo };

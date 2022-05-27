@@ -1,9 +1,11 @@
 #! /usr/bin/env node
 
-const { program } = require("commander");
-const chalk = require("chalk");
+import { program } from "commander";
+import chalk from "chalk";
 
-const { name, version } = require("../package.json");
+import packageInfo from "../utils/importModule.js";
+
+const { name, version } = packageInfo;
 
 program
   .name(name)
@@ -16,7 +18,10 @@ program
   .description("create a new project with utopia-template")
   .option("-f, --force", "overwrite target directory if it exists")
   .action((source, destination) => {
-    require("../src/create")(source, destination);
+    import("../src/create.js").then((module) => {
+      console.log("module: ", module);
+      module.default(source, destination);
+    });
   });
 
 // 更新项目

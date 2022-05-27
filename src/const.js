@@ -40,9 +40,4 @@ const TemplateRepoOptions = {
   react: `${TEMPLATE_REPO_ROOT}utopia-template-react`,
 };
 
-module.exports = {
-  TemplateRepoOptions,
-  TemplateList,
-  OverwriteConfig,
-  RenameRepoConfig,
-};
+export { TemplateRepoOptions, TemplateList, OverwriteConfig, RenameRepoConfig };

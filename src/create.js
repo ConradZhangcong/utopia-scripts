@@ -1,54 +1,17 @@
-const path = require("path");
-const fs = require("fs-extra");
-const util = require("util");
-let ora;
-(async () => {
-  ora = await import("ora");
-})();
-// const ora = require("ora");
-const Inquirer = require("inquirer");
-const downloadGitRepo = require("download-git-repo");
+import path from "path";
+import fs from "fs-extra";
+import ora from "ora";
+import Inquirer from "inquirer";
 
-const { sleep, downloadRepo } = require("./utils");
-const {
+import { sleep, downloadRepo } from "./utils.js";
+import {
   OverwriteConfig,
   TemplateList,
   TemplateRepoOptions,
   RenameRepoConfig,
-} = require("./const");
+} from "./const.js";
 
-const downloadGitRepoPromise = util.promisify(downloadGitRepo);
-
-async function loading(message, fn, ...args) {
-  // const spinner = ora(message);
-  // spinner.start(); // 开启加载
-  try {
-    let executeRes = await fn(...args);
-    // 加载成功
-    // spinner.succeed();
-    return executeRes;
-  } catch (error) {
-    // 加载失败
-    // spinner.fail("request fail, refetching");
-    await sleep(1000);
-    // 重新拉取
-    return loading(message, fn, ...args);
-  }
-}
-
-async function download(target) {
-  // 模板下载地址
-  const templateUrl = `utopia-template-react`;
-  // 调用 downloadGitRepo 方法将对应模板下载到指定目录
-  await loading(
-    "downloading template, please wait",
-    downloadGitRepoPromise,
-    templateUrl,
-    path.join(process.cwd(), target) // 项目创建位置
-  );
-}
-
-module.exports = async function (projectName, options) {
+const create = async (projectName, options) => {
   // 工作目录
   const cwd = process.cwd();
   let actualProjectName = projectName;
@@ -107,3 +70,5 @@ module.exports = async function (projectName, options) {
 // 根据用户git信息等，修改项目模板中package.json的一些信息
 // 对我们的项目进行git初始化
 // 最后安装依赖、启动项目等！
+
+export default create;
