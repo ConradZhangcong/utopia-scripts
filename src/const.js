@@ -1,3 +1,4 @@
+/** 模板仓库列表 */
 const TemplateList = [
   {
     name: "repo",
@@ -7,16 +8,41 @@ const TemplateList = [
   },
 ];
 
+/** 仓库名重复时的选项 */
 const OverwriteConfig = [
   {
     name: "isOverwrite", // 与返回值对应
     type: "list", // list 类型
     message: "Target directory exists, Please choose an action",
     choices: [
-      { name: "Overwrite", value: true },
-      { name: "Cancel", value: false },
+      { name: "Create a new floder", value: "newFolder" },
+      { name: "Overwrite", value: "overwrite" },
+      { name: "Quit", value: "quit" },
     ],
   },
 ];
 
-module.exports = { TemplateList, OverwriteConfig };
+/** 仓库重命名是的选项 */
+const RenameRepoConfig = [
+  {
+    name: "inputNewName",
+    type: "input",
+    message: "Target directory exists, please input new project name: ",
+  },
+];
+
+/** 模板仓库路径 */
+const TEMPLATE_REPO_ROOT = "github:ConradZhangcong/";
+
+/** 远程模板仓库地址 */
+const TemplateRepoOptions = {
+  basic: `${TEMPLATE_REPO_ROOT}utopia-template-react`,
+  react: `${TEMPLATE_REPO_ROOT}utopia-template-react`,
+};
+
+module.exports = {
+  TemplateRepoOptions,
+  TemplateList,
+  OverwriteConfig,
+  RenameRepoConfig,
+};

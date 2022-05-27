@@ -10,24 +10,16 @@ program
   .version(version, "-v, -V, --version", `display version for ${name}`)
   .usage(`<command> [option]`);
 
+// 创建项目
 program
   .command("create <project-name>")
   .description("create a new project with utopia-template")
   .option("-f, --force", "overwrite target directory if it exists")
-  .action((projectName, cmd) => {
-    require("../src/create")(projectName, cmd);
+  .action((source, destination) => {
+    require("../src/create")(source, destination);
   });
 
-program
-  .command("config [value]") // config 命令
-  .description("inspect and modify the config")
-  .option("-g, --get <key>", "get value by key")
-  .option("-s, --set <key> <value>", "set option[key] is value")
-  .option("-d, --delete <key>", "delete option by key")
-  .action((value, keys) => {
-    // value 可以取到 [value] 值，keys会获取到命令参数
-    console.log(value, keys);
-  });
+// 更新项目
 
 // 监听 --help 指令
 program.on("--help", function () {
