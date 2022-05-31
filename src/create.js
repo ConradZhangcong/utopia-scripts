@@ -1,15 +1,15 @@
-import path from "path";
-import fs from "fs-extra";
-import ora from "ora";
-import Inquirer from "inquirer";
+import path from 'path';
+import fs from 'fs-extra';
+import ora from 'ora';
+import Inquirer from 'inquirer';
 
-import { sleep, downloadRepo } from "./utils.js";
+import { sleep, downloadRepo } from './utils.js';
 import {
   OverwriteConfig,
   TemplateList,
   TemplateRepoOptions,
   RenameRepoConfig,
-} from "./const.js";
+} from './const.js';
 
 const create = async (projectName, options) => {
   // 工作目录
@@ -22,42 +22,42 @@ const create = async (projectName, options) => {
   if (fs.existsSync(targetDirectory)) {
     // 目标目录已存在
     if (options.force) {
-      await fs.remove(targetDirectory);
+      // await fs.remove(targetDirectory);
     } else {
-      const { isOverwrite } = await new Inquirer.prompt(OverwriteConfig);
+      const { isOverwrite } = await Inquirer.prompt(OverwriteConfig);
       // 选择 Cancel
-      if (isOverwrite === "quit") {
-        console.log("Quit");
+      if (isOverwrite === 'quit') {
+        console.log('Quit');
         return;
-      } else if (isOverwrite === "overwrite") {
+      } else if (isOverwrite === 'overwrite') {
         // 选择 Overwirte ，先删除掉原有重名目录
-        console.log("\r\nRemoving");
-        await fs.remove(targetDirectory);
-      } else if (isOverwrite === "newFolder") {
-        const { inputNewName } = await new Inquirer.prompt(RenameRepoConfig);
+        console.log('\r\nRemoving');
+        // await fs.remove(targetDirectory);
+      } else if (isOverwrite === 'newFolder') {
+        const { inputNewName } = await Inquirer.prompt(RenameRepoConfig);
         actualProjectName = inputNewName;
       }
     }
   }
 
-  const { repo } = await new Inquirer.prompt(TemplateList);
+  const { repo } = await Inquirer.prompt(TemplateList);
 
-  const spinner = ora.default("downloading template, please wait");
+  const spinner = ora('downloading template, please wait');
   spinner.start(); // 开启加载
 
   console.log(repo);
   // download(projectName);
   downloadRepo(
     TemplateRepoOptions[repo],
-    path.join(process.cwd(), actualProjectName)
+    path.join(process.cwd(), actualProjectName),
   )
     .then(() => {
       spinner.succeed();
-      console.log("done");
+      console.log('done');
     })
     .catch((err) => {
-      spinner.fail("request fail, refetching");
-      console.log("err: ", err);
+      spinner.fail('request fail, refetching');
+      console.log('err: ', err);
     });
 
   console.log(projectName, options);
