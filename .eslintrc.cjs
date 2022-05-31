@@ -23,6 +23,7 @@ module.exports = defineConfig({
 
     'node/no-unpublished-import': 'off',
     'node/no-unpublished-require': 'off',
+    'node/no-unsupported-features/es-syntax': 'off',
 
     '@typescript-eslint/no-var-requires': 'off',
   },

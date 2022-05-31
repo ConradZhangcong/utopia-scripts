@@ -1,24 +1,24 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
-import { program } from "commander";
-import chalk from "chalk";
+import { program } from 'commander';
+import chalk from 'chalk';
 
-import packageInfo from "../utils/importModule.js";
+import packageInfo from '../utils/importModule.js';
 
 const { name, version } = packageInfo;
 
 program
   .name(name)
-  .version(version, "-v, -V, --version", `display version for ${name}`)
+  .version(version, '-v, -V, --version', `display version for ${name}`)
   .usage(`<command> [option]`);
 
 // #region 创建项目
 program
-  .command("create <project-name>")
-  .description("create a new project with utopia-template")
-  .option("-f, --force", "overwrite target directory if it exists")
+  .command('create <project-name>')
+  .description('create a new project with utopia-template')
+  .option('-f, --force', 'overwrite target directory if it exists')
   .action((source, destination) => {
-    import("../src/create.js").then((module) => {
+    import('../src/create.js').then((module) => {
       module.default(source, destination);
     });
   });
@@ -29,30 +29,33 @@ program
 
 // #region 根据commit message生成changelog
 program
-  .command("generate-changelog")
-  .description("generate changelog by commit message")
-  .option("-c, --config <config-file>", "if exists, other configs will be ignored")
+  .command('generate-changelog')
+  .description('generate changelog by commit message')
   .option(
-    "-d, --directory <directory-list>",
-    "accpet string | Array<string>, search subdirectories of current directory"
+    '-c, --config <config-file>',
+    'if exists, other configs will be ignored',
   )
-  .option("-s, --since <start-time>", "start time")
-  .option("-u, --until <end-time>", "end time")
-  .option("-m, --message <message-regexp>", "match regexp for actual message")
+  .option(
+    '-d, --directory <directory-list>',
+    'accpet string | Array<string>, search subdirectories of current directory',
+  )
+  .option('-s, --since <start-time>', 'start time')
+  .option('-u, --until <end-time>', 'end time')
+  .option('-m, --message <message-regexp>', 'match regexp for actual message')
   .action((source, destination) => {
-    import("../src/generate-changelog/index.js").then((module) => {
+    import('../src/generate-changelog/index.js').then((module) => {
       module.default(source, destination);
     });
   });
 // #endregion
 
 // 监听 --help 指令
-program.on("--help", function () {
+program.on('--help', function () {
   // 前后两个空行调整格式，更舒适
   console.log(
     `\r\nRun ${chalk.cyan(
-      `${name} <command> --help`
-    )} for detailed usage of given command.\r\n`
+      `${name} <command> --help`,
+    )} for detailed usage of given command.\r\n`,
   );
 });
 

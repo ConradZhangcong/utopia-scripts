@@ -14,8 +14,14 @@ const formatLog = (log) => {
   return { commitId, author, date, message };
 };
 
+/** 匹配查找模板下的提交信息 */
+const matchMessage = (message, reg) => {
+  console.log(message, reg, typeof message);
+  return reg ? message.match(new RegExp(reg))[1] : message;
+};
+
 /** 生成md文件字符 */
-const generateFileStr = (dirList) => {
+const generateFileStr = (dirList, reg) => {
   const originData = JSON.stringify(dirList, null, 2);
   const completeList = [];
   let result = `# CHANGELOG\r\n\r\n`;
@@ -23,7 +29,7 @@ const generateFileStr = (dirList) => {
   for (let dirItem of dirList) {
     let messageStr = '';
     const { dirPath, logList } = dirItem;
-    const messageList = logList.map((item) => item.message);
+    const messageList = logList.map((item) => matchMessage(item.message, reg));
     const messageListSet = new Set(messageList);
     for (let item of messageListSet) {
       messageStr += item;
@@ -51,7 +57,7 @@ const generateFileStr = (dirList) => {
 };
 
 /** 生成CHANGELOG文件, 返回生成的文件路径 */
-const generateLog = async (gitlogExecMap, { now }) => {
+const generateLog = async (gitlogExecMap, { now, message }) => {
   const originList = await Promise.all(gitlogExecMap.values());
 
   const dirList = [...gitlogExecMap.keys()].map((item) => ({
@@ -71,7 +77,7 @@ const generateLog = async (gitlogExecMap, { now }) => {
   }
 
   // 组装数据
-  const fileData = generateFileStr(dirList);
+  const fileData = generateFileStr(dirList, message);
 
   // 生成文件
   const fileName = `CHANGELOG-${now.getTime()}.md`;

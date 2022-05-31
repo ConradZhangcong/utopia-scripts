@@ -53,6 +53,7 @@ const processOptions = (options) => {
     now: nowDate,
     since: sinceTime,
     until: untilTime,
+    message: options.message,
   };
 };
 

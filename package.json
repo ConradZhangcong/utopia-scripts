@@ -1,6 +1,7 @@
 {
   "name": "utopia-scripts",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "description": "scripts makes you free",
   "type": "module",
   "engines": {
     "node": ">=8.3.0"
@@ -12,9 +13,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.ts src"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "utopia",
+    "scripts",
+    "cli"
+  ],
+  "author": "ConradZhangcong",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
