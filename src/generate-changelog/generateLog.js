@@ -2,7 +2,7 @@ import fs from 'fs';
 import { resolve } from 'path';
 import { promisify } from 'util';
 
-import { SPLIT_STR } from '../const.js';
+import { SPLIT_STR } from './const.js';
 
 const writeFile = promisify(fs.writeFile);
 const matchRegExp = /commitId: (.*), author: (.*), date: (.*), message: (.*)/;
@@ -16,15 +16,16 @@ const formatLog = (log) => {
 
 /** 匹配查找模板下的提交信息 */
 const matchMessage = (message, reg) => {
-  console.log(message, reg, typeof message);
   return reg ? message.match(new RegExp(reg))[1] : message;
 };
 
 /** 生成md文件字符 */
-const generateFileStr = (dirList, reg) => {
+const generateFileStr = (dirList, options) => {
+  const { message: reg, since, until } = options;
   const originData = JSON.stringify(dirList, null, 2);
   const completeList = [];
   let result = `# CHANGELOG\r\n\r\n`;
+  result += `startTime: ${since}\r\nendTime: ${until}\r\n\r\n`;
 
   for (let dirItem of dirList) {
     let messageStr = '';
@@ -57,7 +58,8 @@ const generateFileStr = (dirList, reg) => {
 };
 
 /** 生成CHANGELOG文件, 返回生成的文件路径 */
-const generateLog = async (gitlogExecMap, { now, message }) => {
+const generateLog = async (gitlogExecMap, options) => {
+  const { now } = options;
   const originList = await Promise.all(gitlogExecMap.values());
 
   const dirList = [...gitlogExecMap.keys()].map((item) => ({
@@ -77,7 +79,7 @@ const generateLog = async (gitlogExecMap, { now, message }) => {
   }
 
   // 组装数据
-  const fileData = generateFileStr(dirList, message);
+  const fileData = generateFileStr(dirList, options);
 
   // 生成文件
   const fileName = `CHANGELOG-${now.getTime()}.md`;

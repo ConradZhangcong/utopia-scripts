@@ -15,10 +15,6 @@ module.exports = defineConfig({
     sourceType: 'module',
   },
   rules: {
-    'no-console': [
-      'warn',
-      { allow: ['info', 'warn', 'error', 'time', 'timeEnd'] },
-    ],
     'no-explicit-any': 'off',
 
     'node/no-unpublished-import': 'off',

@@ -40,6 +40,4 @@ const TemplateRepoOptions = {
   react: `${TEMPLATE_REPO_ROOT}utopia-template-react`,
 };
 
-export const SPLIT_STR = '--utopia-scripts-split--';
-
 export { TemplateRepoOptions, TemplateList, OverwriteConfig, RenameRepoConfig };

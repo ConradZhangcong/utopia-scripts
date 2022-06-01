@@ -1,4 +1,3 @@
-// 定义模块和变量
 import child_process from 'child_process'; //子进程模块
 import { exit } from 'process';
 import { promisify } from 'util';
@@ -8,18 +7,9 @@ import getDirectoryList from './getDirectoryList.js';
 import generateLog from './generateLog.js';
 import { isDirectoryExists } from '../utils/isExists.js';
 import { getLocaleTime } from '../utils/time.js';
-import { SPLIT_STR } from '../const.js';
+import { SPLIT_STR } from './const.js';
 
 const exec = promisify(child_process.exec);
-
-/**
-commitId: 9922e72, author: 张聪IT05731, date: 2022-05-27 21:23:32 +0800, message: Z991088-1122 #comment 额度有效期改为额度有效期截止日
-commitId: 03178be, author: 张聪IT05731, date: 2022-05-27 11:40:24 +0800, message: Z991088-1122 #comment fixed
-commitId: 13a6c2c, author: 80234697, date: 2022-05-27 11:35:36 +0800, message: Merge branch '0527_update' of mayun.itc.cmbchina.cn:TY_AssetManagement2/lv73_aims
-_preweb into 0527_update
-commitId: 6bd03e7, author: 80234697, date: 2022-05-27 11:33:11 +0800, message: Z991088-989 #comment 额度有效期改为额度有效期截止日
-commitId: 820cc74, author: 张聪IT05731, date: 2022-05-27 11:30:23 +0800, message: Z991088-1122 #comment fetchAdd增加establishPrjCode
- */
 
 /** 检查git指令是否可用 */
 const checkGit = () =>
@@ -113,33 +103,6 @@ const generateChangelog = async (options) => {
     console.error(chalk.red('utopia-scripts: ', error));
     exit(1);
   }
-
-  // exec(
-  //   FIRST_LOG,
-  //   {
-  //     cwd: execFilePath,
-  //   },
-  //   (err, stdout) => {
-  //     if (err) {
-  //       console.log("err: ", err);
-  //     }
-
-  //     if (!stdout) {
-  //       console.error(`当前时间段提交记录为空`);
-  //       exit(1);
-  //     }
-
-  //     const logList = stdout.split("\r\n");
-
-  //     console.log(typeof stdout, stdout);
-
-  //     logList.map((log, index) => {
-  //       console.log(`${index}: ${log}`);
-  //     });
-
-  //     console.log("task done");
-  //   }
-  // );
 };
 
 export default generateChangelog;

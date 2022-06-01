@@ -3,9 +3,10 @@
 import { program } from 'commander';
 import chalk from 'chalk';
 
-import packageInfo from '../utils/importModule.js';
-
-const { name, version } = packageInfo;
+const { name, version } = {
+  name: 'utopia-scripts',
+  version: '0.0.4',
+};
 
 program
   .name(name)
@@ -18,7 +19,7 @@ program
   .description('create a new project with utopia-template')
   .option('-f, --force', 'overwrite target directory if it exists')
   .action((source, destination) => {
-    import('../src/create.js').then((module) => {
+    import('../src/create/index.js').then((module) => {
       module.default(source, destination);
     });
   });
@@ -51,7 +52,6 @@ program
 
 // 监听 --help 指令
 program.on('--help', function () {
-  // 前后两个空行调整格式，更舒适
   console.log(
     `\r\nRun ${chalk.cyan(
       `${name} <command> --help`,

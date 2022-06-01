@@ -2,8 +2,9 @@ import path from 'path';
 import fs from 'fs-extra';
 import ora from 'ora';
 import Inquirer from 'inquirer';
+import { promisify } from 'util';
+import downloadGitRepo from 'download-git-repo';
 
-import { sleep, downloadRepo } from './utils.js';
 import {
   OverwriteConfig,
   TemplateList,
@@ -11,6 +12,9 @@ import {
   RenameRepoConfig,
 } from './const.js';
 
+const downloadRepo = promisify(downloadGitRepo);
+
+/** 根据模板创建项目 */
 const create = async (projectName, options) => {
   // 工作目录
   const cwd = process.cwd();
@@ -45,22 +49,19 @@ const create = async (projectName, options) => {
   const spinner = ora('downloading template, please wait');
   spinner.start(); // 开启加载
 
-  console.log(repo);
-  // download(projectName);
-  downloadRepo(
-    TemplateRepoOptions[repo],
-    path.join(process.cwd(), actualProjectName),
-  )
-    .then(() => {
-      spinner.succeed();
-      console.log('done');
-    })
-    .catch((err) => {
-      spinner.fail('request fail, refetching');
-      console.log('err: ', err);
-    });
+  console.log(repo, projectName, options);
 
-  console.log(projectName, options);
+  try {
+    await downloadRepo(
+      TemplateRepoOptions[repo],
+      path.join(process.cwd(), actualProjectName),
+    );
+    spinner.succeed();
+    console.log('done');
+  } catch (err) {
+    spinner.fail('request fail, refetching');
+    console.log('err: ', err);
+  }
 };
 
 // 检查目标路径文件是否正确
