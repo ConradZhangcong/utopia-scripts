@@ -1,21 +1,23 @@
-import path from 'path';
-import fs from 'fs-extra';
-import ora from 'ora';
-import Inquirer from 'inquirer';
+import * as path from 'path';
+import * as fs from 'fs-extra';
+import * as ora from 'ora';
+import * as Inquirer from 'inquirer';
 import { promisify } from 'util';
-import downloadGitRepo from 'download-git-repo';
+import * as downloadGitRepo from 'download-git-repo';
 
 import {
   OverwriteConfig,
   TemplateList,
   TemplateRepoOptions,
   RenameRepoConfig,
-} from './const.js';
+} from './const';
 
 const downloadRepo = promisify(downloadGitRepo);
 
+export type createType = (projectName: string, options: any) => Promise<void>;
+
 /** 根据模板创建项目 */
-const create = async (projectName, options) => {
+const create: createType = async (projectName, options) => {
   // 工作目录
   const cwd = process.cwd();
   let actualProjectName = projectName;

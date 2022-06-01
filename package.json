@@ -1,8 +1,7 @@
 {
   "name": "utopia-scripts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "scripts makes you free",
-  "type": "module",
   "engines": {
     "node": ">=8.3.0"
   },
@@ -10,8 +9,9 @@
     "utopia-scripts": "./bin/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js,.ts src"
+    "build": "rm -rf lib && tsc",
+    "lint": "eslint --ext .js,.ts src",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "utopia",
@@ -28,16 +28,17 @@
     "figlet": "^1.5.2",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
-    "ora": "^6.1.0",
+    "ora": "5.4.1",
     "ts-node": "^10.8.0"
   },
   "devDependencies": {
-    "@types/node": "^17.0.36",
+    "@types/inquirer": "^8.2.1",
+    "@types/node": "^17.0.38",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-define-config": "^1.4.1",
+    "eslint-define-config": "^1.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.1",

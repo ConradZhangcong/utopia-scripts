@@ -1,7 +1,14 @@
 import { existsSync, statSync } from 'fs';
 
+type isExistsFn = (
+  path: string,
+  options?: { type?: 'file' | 'directory' },
+) => boolean;
+
+type isExistsTypeFn = (path: string) => boolean;
+
 /** 文件/文件夹是否存在 */
-const isExists = (path, options = {}) => {
+const isExists: isExistsFn = (path, options = {}) => {
   // 判断路径是否存在
   const exists = existsSync(path);
   if (!exists) return false;
@@ -25,10 +32,11 @@ const isExists = (path, options = {}) => {
 };
 
 /** 文件是否存在 */
-export const isFileExists = (path) => isExists(path, { type: 'file' });
+export const isFileExists: isExistsTypeFn = (path) =>
+  isExists(path, { type: 'file' });
 
 /** 文件是否存在 */
-export const isDirectoryExists = (path) =>
+export const isDirectoryExists: isExistsTypeFn = (path) =>
   isExists(path, { type: 'directory' });
 
 export default isExists;

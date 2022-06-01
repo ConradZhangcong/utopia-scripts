@@ -1,7 +1,7 @@
-const sleep = (time) => {
+const sleep = (time: number): Promise<unknown> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve();
+      resolve(undefined);
     }, time);
   });
 };

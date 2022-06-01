@@ -17,6 +17,13 @@ module.exports = defineConfig({
   rules: {
     'no-explicit-any': 'off',
 
+    'node/no-missing-import': [
+      'error',
+      {
+        allowModules: ['types', 'estree', 'less', 'sass', 'stylus'],
+        tryExtensions: ['.ts', '.js', '.d.ts'],
+      },
+    ],
     'node/no-unpublished-import': 'off',
     'node/no-unpublished-require': 'off',
     'node/no-unsupported-features/es-syntax': 'off',

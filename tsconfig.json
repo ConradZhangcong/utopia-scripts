@@ -9,11 +9,14 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "commonjs",
+    // "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+    // "isolatedModules": true,
+    // "noEmit": false,
+    "outDir": "./lib",
+    "baseUrl": "./"
   },
-  "include": ["bin"]
+  "include": ["src"]
+  // "exclude": ["lib", "node_modules", "test"]
 }
