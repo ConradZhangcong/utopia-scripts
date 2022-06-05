@@ -1,7 +1,7 @@
 import { exit } from 'process';
 import * as chalk from 'chalk';
 
-import { isDirectoryExists } from '../utils/isExists';
+import { isDirectoryExists } from '../__utils/isExists';
 import { checkGit, checkGitRepo } from './check';
 import { processOptions } from './process';
 import generateLog from './generateLog';

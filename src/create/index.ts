@@ -1,73 +1,59 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
+import { exit } from 'process';
+import { rm } from 'fs';
+import { resolve } from 'path';
 import * as ora from 'ora';
-import * as Inquirer from 'inquirer';
 import { promisify } from 'util';
-import * as downloadGitRepo from 'download-git-repo';
+import * as chalk from 'chalk';
 
-import {
-  OverwriteConfig,
-  TemplateList,
-  TemplateRepoOptions,
-  RenameRepoConfig,
-} from './const';
+import { downloadGitRepo } from '../__utils';
+import getActualProjectName from './getActualProjectName';
+import { chooseTemplate } from './inquirers';
 
-const downloadRepo = promisify(downloadGitRepo);
+import { TemplateRepos, OptionsType } from './const';
 
-export type createType = (projectName: string, options: any) => Promise<void>;
+const remove = promisify(rm);
+
+export type createType = (
+  projectName: string,
+  options: OptionsType,
+) => Promise<void>;
 
 /** 根据模板创建项目 */
 const create: createType = async (projectName, options) => {
-  // 工作目录
-  const cwd = process.cwd();
-  let actualProjectName = projectName;
-  // 目标目录
-  const targetDirectory = path.join(cwd, projectName);
-
-  // TODO:判断是否为目录, 如果为文件目录则提示
-  if (fs.existsSync(targetDirectory)) {
-    // 目标目录已存在
-    if (options.force) {
-      // await fs.remove(targetDirectory);
-    } else {
-      const { isOverwrite } = await Inquirer.prompt(OverwriteConfig);
-      // 选择 Cancel
-      if (isOverwrite === 'quit') {
-        console.log('Quit');
-        return;
-      } else if (isOverwrite === 'overwrite') {
-        // 选择 Overwirte ，先删除掉原有重名目录
-        console.log('\r\nRemoving');
-        // await fs.remove(targetDirectory);
-      } else if (isOverwrite === 'newFolder') {
-        const { inputNewName } = await Inquirer.prompt(RenameRepoConfig);
-        actualProjectName = inputNewName;
-      }
-    }
-  }
-
-  const { repo } = await Inquirer.prompt(TemplateList);
-
-  const spinner = ora('downloading template, please wait');
-  spinner.start(); // 开启加载
-
-  console.log(repo, projectName, options);
-
   try {
-    await downloadRepo(
-      TemplateRepoOptions[repo],
-      path.join(process.cwd(), actualProjectName),
-    );
-    spinner.succeed();
-    console.log('done');
-  } catch (err) {
-    spinner.fail('request fail, refetching');
-    console.log('err: ', err);
+    const actualPrjNameRes = await getActualProjectName(projectName, options);
+    const { quit, projectName: actualPrjName, overwrite } = actualPrjNameRes;
+    if (quit) {
+      console.log('quit');
+      console.log(chalk.blue('utopia-scripts: create done!'));
+      exit(0);
+    }
+
+    const cwd = process.cwd();
+    const actualPath = resolve(cwd, actualPrjName);
+
+    // 删除原文件
+    if (overwrite) {
+      await remove(actualPath, { force: true, recursive: true });
+    }
+    // 拷贝项目到目标文件夹
+    const { template } = await chooseTemplate();
+    const spinner = ora('downloading template, please wait');
+    spinner.start(); // 开启加载
+    try {
+      await downloadGitRepo(TemplateRepos[template], actualPath);
+      spinner.succeed();
+      console.log('done');
+    } catch (err) {
+      spinner.fail('request fail, refetching');
+      console.log('err: ', err);
+    }
+  } catch (error) {
+    console.error(chalk.red('utopia-scripts: ', error));
+    exit(1);
   }
 };
 
-// 检查目标路径文件是否正确
-// 拉取git上的vue+ts+ele的项目模板
 // 存放在临时文件夹中
 // 把下载下来的资源文件，拷贝到目标文件夹
 // 根据用户git信息等，修改项目模板中package.json的一些信息

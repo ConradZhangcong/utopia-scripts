@@ -28,6 +28,7 @@ module.exports = defineConfig({
     'node/no-unpublished-require': 'off',
     'node/no-unsupported-features/es-syntax': 'off',
 
+    '@typescript-eslint/ban-ts-comment': 'off', // TODO: this rule shoule be turn on
     '@typescript-eslint/no-var-requires': 'off',
   },
   overrides: [
