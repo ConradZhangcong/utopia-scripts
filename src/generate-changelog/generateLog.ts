@@ -114,7 +114,7 @@ const generateLog = async (
     const logList = gitlogItem.stdout
       .split(SPLIT_STR)
       .map((item) => formatLog(item))
-      .filter((item) => !item);
+      .filter((item) => !!item);
     gitLogList[index].logList = logList as GitCommitItem[];
   }
 

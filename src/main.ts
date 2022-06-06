@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import * as chalk from 'chalk';
+import { cyan as chalkCyan } from 'chalk';
 
 import create, { createType } from './create';
 import generateChangelog, { generateChangelogType } from './generate-changelog';
@@ -46,7 +46,7 @@ program
 // 监听 --help 指令
 program.on('--help', function () {
   console.log(
-    `\r\nRun ${chalk.cyan(
+    `\r\nRun ${chalkCyan(
       `${name} <command> --help`,
     )} for detailed usage of given command.\r\n`,
   );

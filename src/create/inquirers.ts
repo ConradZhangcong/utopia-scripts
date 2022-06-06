@@ -1,5 +1,5 @@
 import { prompt } from 'inquirer';
-import * as chalk from 'chalk';
+import { red as chalkRed } from 'chalk';
 
 /** 要求输入新的项目名称 */
 export const inputNewPrjName = (): Promise<{
@@ -20,7 +20,7 @@ export const confirmOverwrite = (
   prompt({
     type: 'confirm',
     name: 'isOverwrite',
-    message: `Sure to overwrite: ${chalk.red(projectName)} ?`,
+    message: `Sure to overwrite: ${chalkRed(projectName)} ?`,
   });
 
 /** 项目名冲突时的操作 */

@@ -1,9 +1,9 @@
 import { exit } from 'process';
 import { rm } from 'fs';
 import { resolve } from 'path';
-import * as ora from 'ora';
+import ora from 'ora';
 import { promisify } from 'util';
-import * as chalk from 'chalk';
+import { blue as chalkBlue, red as chalkRed } from 'chalk';
 
 import { downloadGitRepo } from '../__utils';
 import getActualProjectName from './getActualProjectName';
@@ -25,7 +25,7 @@ const create: createType = async (projectName, options) => {
     const { quit, projectName: actualPrjName, overwrite } = actualPrjNameRes;
     if (quit) {
       console.log('quit');
-      console.log(chalk.blue('utopia-scripts: create done!'));
+      console.log(chalkBlue('utopia-scripts: create done!'));
       exit(0);
     }
 
@@ -49,7 +49,8 @@ const create: createType = async (projectName, options) => {
       console.log('err: ', err);
     }
   } catch (error) {
-    console.error(chalk.red('utopia-scripts: ', error));
+    console.error(chalkRed('utopia-scripts create error:'));
+    console.error(error);
     exit(1);
   }
 };

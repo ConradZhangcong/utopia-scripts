@@ -1,5 +1,5 @@
 import { exit } from 'process';
-import * as chalk from 'chalk';
+import { blue as chalkBlue, red as chalkRed } from 'chalk';
 
 import { isDirectoryExists } from '../__utils/isExists';
 import { checkGit, checkGitRepo } from './check';
@@ -37,25 +37,26 @@ const generateChangelog: generateChangelogType = async (options) => {
     if (execDirList.length > 0) {
       const logFilePath = await generateLog(execDirList, handledOptions);
       console.log(
-        chalk.blue(`changelog has been generated, open ${logFilePath}!`),
+        chalkBlue(`changelog has been generated, open ${logFilePath}!`),
       );
     }
     // 提示错误信息
     if (notExistsDirList.length > 0) {
       const notExistsDirStr = notExistsDirList.join('\r\n');
       const errorMsg = `directory are not exist:\r\n${notExistsDirStr}\r\n`;
-      console.log(chalk.red(errorMsg));
+      console.log(chalkRed(errorMsg));
     }
     if (notGitRepoDirList.length > 0) {
       const notGitRepoDirStr = notGitRepoDirList.join('\r\n');
       const errorMsg = `not a git repository:\r\n${notGitRepoDirStr}\r\n`;
-      console.log(chalk.red(errorMsg));
+      console.log(chalkRed(errorMsg));
     }
     // 完成
-    console.log(chalk.blue('utopia-scripts: generate changelog done!'));
+    console.log(chalkBlue('utopia-scripts: generate changelog done!'));
     exit(0);
   } catch (error) {
-    console.error(chalk.red('utopia-scripts: ', error));
+    console.error(chalkRed('utopia-scripts generate-changelog error:'));
+    console.error(error);
     exit(1);
   }
 };

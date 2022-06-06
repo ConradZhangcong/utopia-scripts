@@ -13,7 +13,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "rm -rf lib && tsc",
+    "build": "node build.js",
     "lint": "eslint --ext .js,.ts src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,17 +27,14 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
-    "cosmiconfig": "^7.0.1",
     "download-git-repo": "^3.0.2",
-    "figlet": "^1.5.2",
-    "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
     "ora": "5.4.1",
-    "ts-node": "^10.8.0"
+    "utopia-utils": "^0.0.4"
   },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",
-    "@types/node": "^17.0.38",
+    "@types/node": "^17.0.40",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "esbuild": "^0.14.42",
@@ -48,7 +45,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.1",
     "prettier": "2.2.1",
-    "typescript": "^4.7.2"
+    "typescript": "^4.7.3"
   },
   "repository": {
     "type": "git",
