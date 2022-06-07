@@ -15,7 +15,8 @@
   "scripts": {
     "build": "node build.js",
     "lint": "eslint --ext .js,.ts src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"pass test\"",
+    "publish": "bash publish.sh"
   },
   "keywords": [
     "utopia",
