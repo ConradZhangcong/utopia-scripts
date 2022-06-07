@@ -7,6 +7,7 @@ import { blue as chalkBlue, red as chalkRed } from 'chalk';
 
 import { downloadGitRepo } from '../__utils';
 import getActualProjectName from './getActualProjectName';
+import updateProject from './updateProject';
 import { chooseTemplate } from './inquirers';
 
 import { TemplateRepos, OptionsType } from './const';
@@ -21,6 +22,7 @@ export type createType = (
 /** 根据模板创建项目 */
 const create: createType = async (projectName, options) => {
   try {
+    // 获取实际的项目名
     const actualPrjNameRes = await getActualProjectName(projectName, options);
     const { quit, projectName: actualPrjName, overwrite } = actualPrjNameRes;
     if (quit) {
@@ -28,20 +30,24 @@ const create: createType = async (projectName, options) => {
       console.log(chalkBlue('utopia-scripts: create done!'));
       exit(0);
     }
-
+    // 拼接项目路径
     const cwd = process.cwd();
     const actualPath = resolve(cwd, actualPrjName);
 
-    // 删除原文件
-    if (overwrite) {
-      await remove(actualPath, { force: true, recursive: true });
-    }
-    // 拷贝项目到目标文件夹
+    // 选择模板
     const { template } = await chooseTemplate();
+    // 拷贝项目到目标文件夹
     const spinner = ora('downloading template, please wait');
     spinner.start(); // 开启加载
     try {
+      // 删除原文件
+      if (overwrite) {
+        await remove(actualPath, { force: true, recursive: true });
+      }
+      // 下载项目到目标文件夹
       await downloadGitRepo(TemplateRepos[template], actualPath);
+      // 更新项目中部分文件
+      await updateProject({ path: actualPath, prjName: actualPrjName });
       spinner.succeed();
       console.log('done');
     } catch (err) {
@@ -54,11 +60,5 @@ const create: createType = async (projectName, options) => {
     exit(1);
   }
 };
-
-// 存放在临时文件夹中
-// 把下载下来的资源文件，拷贝到目标文件夹
-// 根据用户git信息等，修改项目模板中package.json的一些信息
-// 对我们的项目进行git初始化
-// 最后安装依赖、启动项目等！
 
 export default create;
