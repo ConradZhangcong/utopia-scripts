@@ -1,6 +1,6 @@
 {
   "name": "utopia-scripts",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "scripts makes you free",
   "engines": {
     "node": ">=8.3.0"
